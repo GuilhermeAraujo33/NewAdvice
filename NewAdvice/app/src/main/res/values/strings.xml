@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NewAdvice</string>
+    <string name="entrar">Entrar</string>
+    <string name="text_cadastro">Criar uma conta</string>
+    <string name="text_login">Login</string>
+    <string name="text_cadastrar">Cadastrar</string>
+    <string name="terms_and_conditions_text">Termos e condições</string>
+    <string name="text_cadastrar_mentor">Termos e condições</string>
+    <string name="text_cadastrar_aprendiz">Termos e condições</string>
+</resources>

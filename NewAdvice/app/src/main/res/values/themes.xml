@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.NewAdvice" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <item name="colorPrimary" type="color">@color/pink</item>
+    <item name="colorPrimaryVariant" type="color">@color/pink_claro</item>
+    <item name="colorOnPrimary" type="color">@color/white</item>
+
+    <item name="colorSecondary" type="color">@color/orange</item>
+    <item name="colorSecondaryVariant" type="color">@color/orange</item>
+    <item name="colorOnSecondary" type="color">@color/black</item>
+
+</resources>
