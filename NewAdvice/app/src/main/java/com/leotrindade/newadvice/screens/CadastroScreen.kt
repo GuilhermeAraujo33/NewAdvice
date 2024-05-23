@@ -26,13 +26,13 @@ import com.leotrindade.newadvice.R
 import com.leotrindade.newadvice.componentes.HabilidadesDropdown
 import com.leotrindade.newadvice.database.repository.PerfilRepository
 import com.leotrindade.newadvice.model.Perfil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 import kotlinx.coroutines.launch
 
 @Composable
 fun CadastroAprendizScreen() {
-
-
     var nomeState by remember { mutableStateOf("") }
     var senhaState by remember { mutableStateOf("") }
     var emailState by remember { mutableStateOf("") }
@@ -43,7 +43,7 @@ fun CadastroAprendizScreen() {
     var aprendizState by remember { mutableStateOf(false) }
     var context = LocalContext.current
     var perfilRepository = PerfilRepository(context)
-    var listaState = remember { mutableStateOf(perfilRepository.listarPerfis())}
+    var listaState = remember { mutableStateOf<List<Perfil>>(emptyList())}
 
     Surface {
         Column {
@@ -64,10 +64,18 @@ fun CadastroAprendizScreen() {
                 onTelefoneChange = { telefoneState = it },
                 onMentorChange = { mentorState = it },
                 onAprendizChange = { aprendizState = it },
-                atualizar = { listaState.value = perfilRepository.listarPerfis() }
+                atualizar = {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        listaState.value = perfilRepository.listarPerfis()
+                    }
+                }
             )
-            var lista = listOf(perfilRepository.listarPerfis())
-            PerfilList(lista)
+
+            LaunchedEffect(Unit) {
+                listaState.value =  perfilRepository.listarPerfis()
+            }
+
+            PerfilList(listaState.value)
         }
 
     }
@@ -281,21 +289,21 @@ fun PerfilForm(
     }
 }
 @Composable
-fun PerfilList(listaPerfilState: List<Perfil>) {
+fun PerfilList2(listaPerfilState: List<Perfil>) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
         for (perfil in listaPerfilState) {
-            PerfilCard(perfil)
+            PerfilCardTeste(perfil)
             Spacer(modifier = Modifier.height(4.dp))
         }
     }
 }
 
 @Composable
-fun PerfilCard(perfil: Perfil) {
+fun PerfilCardTeste(perfil: Perfil) {
     val context = LocalContext.current
     val perfilRepository = PerfilRepository(context)
     Card(

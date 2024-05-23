@@ -27,6 +27,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,13 +49,16 @@ import com.leotrindade.newadvice.R
 import com.leotrindade.newadvice.database.repository.LoginRepository
 import com.leotrindade.newadvice.database.repository.PerfilRepository
 import com.leotrindade.newadvice.model.Perfil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun HomeScreen() {
     val context = LocalContext.current
     val perfilRepository = PerfilRepository(context)
-
+    var listaState = remember { mutableStateOf<List<Perfil>>(emptyList())}
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -66,13 +70,20 @@ fun HomeScreen() {
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            PerfilList()
+            LaunchedEffect(Unit) {
+                listaState.value =  perfilRepository.listarPerfis()
+            }
+
+            PerfilList(listaState.value)
         }
     }
 }
 
 @Composable
-fun PerfilList() {
+fun PerfilList(listaPerfilState: List<Perfil>) {
+    val context = LocalContext.current
+    val perfilRepository = PerfilRepository(context)
+    var listaState = remember { mutableStateOf<List<Perfil>>(emptyList())}
     var pesquisa by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
@@ -123,8 +134,8 @@ fun PerfilList() {
         }
 
         Spacer(modifier = Modifier.height(8.dp))
-        for (i in 0..1) {
-            CardLikeEDeslike()
+        for (perfil in listaPerfilState) {
+            CardLikeEDeslike(perfil)
             Spacer(modifier = Modifier.height(4.dp))
         }
     }

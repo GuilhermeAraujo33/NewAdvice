@@ -32,7 +32,6 @@ fun NavegacaoConfig(navController: NavHostController) {
         composable(
             "cadastroAprendiz"){
             CadastroAprendizScreen()
-
         }
     }
 }

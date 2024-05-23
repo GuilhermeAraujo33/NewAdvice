@@ -54,8 +54,8 @@ class PerfilRepository(context: Context) {
     }
 
 
-    fun listarPerfis(){
-        CoroutineScope(Dispatchers.IO).launch {
+    suspend fun listarPerfis(): List<Perfil> {
+        return withContext(Dispatchers.IO) {
             db.listarPerfis()
         }
     }

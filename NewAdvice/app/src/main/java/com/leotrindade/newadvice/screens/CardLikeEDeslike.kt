@@ -4,11 +4,14 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -19,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.leotrindade.newadvice.R
+import com.leotrindade.newadvice.database.repository.PerfilRepository
 import com.leotrindade.newadvice.model.Perfil
 
 /*@Composable
@@ -95,13 +100,17 @@ fun CardLikeEDeslike() {
 }*/
 
 @Composable
-fun CardLikeEDeslike() {
+fun CardLikeEDeslike(perfil: Perfil) {
+    val context = LocalContext.current
+    val perfilRepository = PerfilRepository(context)
+
     var likes by remember { mutableStateOf(0) }
     var dislikes by remember { mutableStateOf(0) }
     var userAction by remember { mutableStateOf<UserAction?>(null) } // Estado para armazenar a ação do usuário
     var showDialog by remember { mutableStateOf(false) } // Estado para controlar a exibição do dialog
     var pendingAction by remember { mutableStateOf<UserAction?>(null) } // Estado para armazenar a ação pendente
-
+    var listaState = remember { mutableStateOf<List<Perfil>>(emptyList())}
+    
     // Função para processar a ação pendente
     fun processPendingAction() {
         pendingAction?.let { action ->
@@ -187,19 +196,19 @@ fun CardLikeEDeslike() {
         ) {
 
             Text(
-                text = "Leonardo Trindade",
+                text = perfil.nome,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
 
             Text(
-                text = "Desenvolvedor",
+                text = perfil.tema,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center
             )
             Text(
-                text = "Aprendiz",
+                text = if (perfil.isAprendiz)"Aprendiz" else "Mentor",
                 fontSize = 10.sp,
                 textAlign = TextAlign.Center
             )
