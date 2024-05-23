@@ -108,8 +108,19 @@ fun LoginScreen(navController: NavHostController) {
                 onClick = {
                     scope.launch {
                         val perfil_obj = perfilRepository.validarPerfil(email = email, senha = password);
-                        navController.navigate("home")
+                        if (perfil_obj?.email == email && perfil_obj.senha == password){
+                            navController.navigate("home")
+                        }else if (perfil_obj?.email == "" && perfil_obj.senha == ""){
+                            scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    "Login invalido!",
+                                    actionLabel = null,
+                                    withDismissAction = true,
+                                    duration = SnackbarDuration.Short
+                                )
+                            }
                         }
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()

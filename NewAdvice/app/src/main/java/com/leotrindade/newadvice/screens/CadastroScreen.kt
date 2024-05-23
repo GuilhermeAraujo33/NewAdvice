@@ -304,6 +304,8 @@ fun PerfilList2(listaPerfilState: List<Perfil>) {
 
 @Composable
 fun PerfilCardTeste(perfil: Perfil) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val perfilRepository = PerfilRepository(context)
     Card(
@@ -338,18 +340,21 @@ fun PerfilCardTeste(perfil: Perfil) {
             }
             IconButton(
                 onClick = {
-                    val perfil = Perfil(
-                        id = 0,
-                        nome = perfil.nome,
-                        senha = perfil.senha,
-                        email = perfil.email,
-                        tema = perfil.tema,
-                        habilidade = perfil.habilidade,
-                        telefone = perfil.telefone,
-                        isMentor = perfil.isAprendiz,
-                        isAprendiz = perfil.isAprendiz
-                    )
-                    perfilRepository.excluir(perfil)},
+                    scope.launch {
+                        val perfil = Perfil(
+                            id = 0,
+                            nome = perfil.nome,
+                            senha = perfil.senha,
+                            email = perfil.email,
+                            tema = perfil.tema,
+                            habilidade = perfil.habilidade,
+                            telefone = perfil.telefone,
+                            isMentor = perfil.isAprendiz,
+                            isAprendiz = perfil.isAprendiz
+                        )
+                        perfilRepository.excluir(perfil)
+                    }
+                }
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
